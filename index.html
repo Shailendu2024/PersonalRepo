@@ -251,6 +251,22 @@
     color: var(--wine);
   }
 
+  #welcome h1.typing::after{
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 0.85em;
+    background: var(--gold);
+    margin-left: 3px;
+    animation: caretBlink 0.8s step-end infinite;
+    vertical-align: -0.1em;
+  }
+
+  @keyframes caretBlink{
+    0%, 100%{ opacity: 1; }
+    50%{ opacity: 0; }
+  }
+
   #welcome .subtitle{
     margin-top: 1rem;
     font-size: 1.15rem;
@@ -298,6 +314,80 @@
     margin: 0 0.15rem;
   }
 
+  .candle-wrap{
+    width: 26px;
+    height: 40px;
+    margin: 0 auto 0.5rem;
+  }
+
+  .flame{
+    transform-origin: 50% 100%;
+    animation: flicker 2.4s ease-in-out infinite;
+  }
+
+  @keyframes flicker{
+    0%, 100%{ transform: scaleY(1) scaleX(1) rotate(0deg); }
+    25%{ transform: scaleY(1.1) scaleX(0.93) rotate(-2deg); }
+    50%{ transform: scaleY(0.94) scaleX(1.06) rotate(2deg); }
+    75%{ transform: scaleY(1.06) scaleX(0.96) rotate(-1deg); }
+  }
+
+  .watermark{
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-8deg);
+    font-family: 'Alex Brush', cursive;
+    font-size: 5.5rem;
+    color: var(--wine);
+    opacity: 0.05;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .timeline{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.3rem;
+    margin: 0 0 1.6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .t-step{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: 78px;
+  }
+
+  .t-dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(212,175,55,0.6);
+  }
+
+  .t-label{
+    font-size: 0.68rem;
+    color: var(--wine-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .t-line{
+    flex: 0 0 20px;
+    height: 1px;
+    margin-top: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
   .divider{
     display: flex;
     align-items: center;
@@ -325,6 +415,8 @@
     padding: 0 0.7rem 0.2rem 0;
     scrollbar-width: thin;
     scrollbar-color: var(--gold) transparent;
+    position: relative;
+    z-index: 1;
   }
 
   .letter-scroll::-webkit-scrollbar{ width: 5px; }
@@ -454,6 +546,30 @@
     color: var(--gold);
   }
 
+  .rose-emoji{
+    font-size: 2.8rem;
+    margin: 0.3rem 0 0.5rem;
+    filter: drop-shadow(0 6px 10px rgba(92,31,62,0.25));
+  }
+
+  .petal{
+    position: fixed;
+    top: -30px;
+    pointer-events: none;
+    z-index: 5;
+    width: 11px;
+    height: 15px;
+    background: linear-gradient(135deg, #F0A6B8, #C94B65);
+    border-radius: 100% 0 100% 0;
+    opacity: 0;
+    animation: petalFall linear forwards;
+  }
+
+  @keyframes petalFall{
+    0%{ transform: translate(0, 0) rotate(0deg); opacity: 0.9; }
+    100%{ transform: translate(var(--drift), 110vh) rotate(var(--rot)); opacity: 0; }
+  }
+
   .floating-heart{
     position: fixed;
     bottom: -40px;
@@ -526,7 +642,7 @@
       <svg viewBox="0 0 26 26"><path d="M2 2 Q2 14 14 14" fill="none" stroke="#D4AF37" stroke-width="1.4"/><circle cx="2" cy="2" r="2" fill="#D4AF37"/></svg>
     </span>
     <div class="icon">💌</div>
-    <h1>Heyy Priya</h1>
+    <h1 id="welcomeHeading">Heyy Priya</h1>
     <p class="subtitle">I made something small for you.</p>
     <button class="btn" id="openBtn">Open the letter</button>
   </div>
@@ -544,11 +660,43 @@
     <span class="corner br">
       <svg viewBox="0 0 26 26"><path d="M2 2 Q2 14 14 14" fill="none" stroke="#D4AF37" stroke-width="1.4"/><circle cx="2" cy="2" r="2" fill="#D4AF37"/></svg>
     </span>
-    <div class="icon">❤️</div>
+    <div class="candle-wrap">
+      <svg viewBox="0 0 26 40" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <rect x="9" y="16" width="8" height="22" rx="1.5" fill="#FCE9C6"/>
+        <rect x="9" y="16" width="8" height="22" rx="1.5" fill="url(#waxShade)"/>
+        <defs>
+          <linearGradient id="waxShade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#00000000"/>
+            <stop offset="1" stop-color="#5C1F3E" stop-opacity="0.12"/>
+          </linearGradient>
+        </defs>
+        <g class="flame">
+          <path d="M13 3 C 9 8, 8 13, 13 16 C 18 13, 17 8, 13 3 Z" fill="#E8B958"/>
+          <path d="M13 8 C 11 11, 11 13, 13 14.5 C 15 13, 15 11, 13 8 Z" fill="#FFF3D6"/>
+        </g>
+      </svg>
+    </div>
     <div class="monogram">S <span>♥</span> P</div>
-    <h2>My Love,</h2>
+    <h2>❤️My Love❤️,</h2>
     <div class="divider">✦</div>
+    <div class="timeline">
+      <div class="t-step">
+        <span class="t-dot"></span>
+        <span class="t-label">miles apart</span>
+      </div>
+      <span class="t-line"></span>
+      <div class="t-step">
+        <span class="t-dot"></span>
+        <span class="t-label">talking with eachother</span>
+      </div>
+      <span class="t-line"></span>
+      <div class="t-step">
+        <span class="t-dot"></span>
+        <span class="t-label">someday, together</span>
+      </div>
+    </div>
     <div class="letter-scroll-wrap">
+      <div class="watermark">S &amp; P</div>
       <div class="letter-scroll">
         <div class="message">
           <p>Sometimes I have so many things I want to tell you, but I don't always know how to put all those feelings into words. Still, tonight I wanted to sit down and write to you not because I have something special to say, but simply because you are so special to me. ❤️</p>
@@ -602,11 +750,14 @@
       <svg viewBox="0 0 26 26"><path d="M2 2 Q2 14 14 14" fill="none" stroke="#D4AF37" stroke-width="1.4"/><circle cx="2" cy="2" r="2" fill="#D4AF37"/></svg>
     </span>
     <div class="icon">🥰</div>
+    <div class="rose-emoji">🌹</div>
     <h2>Yayyy!</h2>
     <p class="message">
-      You just made me the happiest person.
+      You just made my heart so happy.
       <br><br>
-      I promise I'll keep making memories with you, and annoying you, forever.
+      I promise to keep making memories with you,
+making you smile, and annoying you a little...
+forever. ❤️
       <br><br>
       I love you more and more, Priya.
     </p>
@@ -661,8 +812,23 @@
       gate.classList.add('hidden');
       stage.classList.add('reveal');
       document.body.style.overflow = 'auto';
+      typewriter(document.getElementById('welcomeHeading'), 'Heyy Priya', 75);
     }, 700);
   });
+
+  function typewriter(el, text, speed){
+    el.textContent = '';
+    el.classList.add('typing');
+    let i = 0;
+    const timer = setInterval(() => {
+      el.textContent += text[i];
+      i++;
+      if(i >= text.length){
+        clearInterval(timer);
+        el.classList.remove('typing');
+      }
+    }, speed);
+  }
 
   function switchCard(from, to){
     from.classList.remove('active');
@@ -681,7 +847,23 @@
 
   function startAmbientHearts(){
     if(ambientTimer) return;
-    ambientTimer = setInterval(spawnFloatingHeart, 600);
+    ambientTimer = setInterval(() => {
+      if(Math.random() < 0.4){ spawnPetal(); } else { spawnFloatingHeart(); }
+    }, 600);
+  }
+
+  function spawnPetal(){
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.style.left = Math.random()*100 + 'vw';
+    const drift = (Math.random()*140 - 70) + 'px';
+    const rot = (Math.random()*360) + 'deg';
+    el.style.setProperty('--drift', drift);
+    el.style.setProperty('--rot', rot);
+    const dur = 7 + Math.random()*4;
+    el.style.animationDuration = dur + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), dur*1000 + 200);
   }
 
   function spawnFloatingHeart(){
@@ -712,7 +894,7 @@
   });
 
   function burstHearts(){
-    const glyphs = ['❤️','💕','✦','💗','💘','✨'];
+    const glyphs = ['❤️','💕','✦','💗','💘','✨','🌹'];
     for(let i=0;i<28;i++){
       setTimeout(() => {
         const el = document.createElement('div');
